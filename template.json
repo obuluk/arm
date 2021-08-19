@@ -1,0 +1,46 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "variables": {
+        "location": "eastus",
+        "extendedLocation": {},
+        "virtualNetworkName": "vnetdemo",
+        "resourceGroup": "POC_DevOps_RG",
+        "addressSpaces": "10.6.0.0/16",
+        "ipv6Enabled": false,
+        "subnetCount": 1,
+        "subnet0_name": "default",
+        "subnet0_addressRange": "10.6.0.0/24",
+        "ddosProtectionPlanEnabled": false,
+        "firewallEnabled": false,
+        "bastionEnabled": false
+    },
+    
+    "resources": [
+        {
+            "name": "[variables('virtualNetworkName')]",
+            "type": "Microsoft.Network/VirtualNetworks",
+            "apiVersion": "2021-01-01",
+            "location": "[variables('location')]",
+            "extendedLocation": "[if(empty(variables('extendedLocation')), json('null'), variables('extendedLocation'))]",
+            "dependsOn": [],
+            "tags": {},
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.6.0.0/16"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "default",
+                        "properties": {
+                            "addressPrefix": "10.6.0.0/24"
+                        }
+                    }
+                ],
+                "enableDdosProtection": "[variables('ddosProtectionPlanEnabled')]"
+            }
+        }
+    ]
+}
